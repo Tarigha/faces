@@ -381,8 +381,6 @@ window.handleGuess = function handleGuess(index) {
             // Hard Mode: Fast auto-advance
             setTimeout(loadNextLevel, 1500);
         } else {
-            // Easy/Normal: Manual Advance
-        } else {
             // Normal Mode: Manual Advance for learning
             toast.innerHTML = currentLevel.explanation + "<br><br><span style='font-size: 0.8rem; opacity: 0.7; letter-spacing: 1px;'>[ TAP ANYWHERE TO CONTINUE ]</span>";
             toast.classList.add('show');

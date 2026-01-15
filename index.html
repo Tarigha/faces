@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Facial Detective | Micro-Expression Training</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <h1>FACIAL DETECTIVE</h1>
+    <div class="subtitle">Micro-expression Analysis Protocol // Subject #8492</div>
+
+    <div class="hud">
+        <div class="hud-label">TARGET EXPRESSION</div>
+        <div class="hud-target" id="target-display">LOADING...</div>
+        <div class="hard-mode-controls">
+            <label class="toggle-switch">
+                <input type="checkbox" id="hard-mode-toggle" onchange="toggleHardMode()">
+                <span class="slider"></span>
+            </label>
+            <span class="mode-label">HARD PROTOCOL</span>
+        </div>
+    </div>
+
+    <div class="game-wrapper" id="game-board">
+        <div class="timer-bar-container" id="timer-container" style="opacity: 0;">
+            <div class="timer-bar" id="timer-bar"></div>
+        </div>
+        <div class="grid-container">
+            <div class="zone" data-index="0" onclick="handleGuess(0)"></div> <!-- TL: Disgust -->
+            <div class="zone" data-index="1" onclick="handleGuess(1)"></div> <!-- TR: Fear -->
+            <div class="zone" data-index="2" onclick="handleGuess(2)"></div> <!-- BL: Fake Smile -->
+            <div class="zone" data-index="3" onclick="handleGuess(3)"></div> <!-- BR: Blend -->
+
+            <div class="wrong-overlay" id="flash-overlay"></div>
+
+            <!-- SVG Arrows -->
+            <!-- Disgust: Point to nose/lip -->
+            <svg class="arrow-indicator" id="arrow-0" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="3"
+                stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <polyline points="19 12 12 19 5 12"></polyline>
+            </svg>
+
+            <!-- Fear: Point to brows -->
+            <svg class="arrow-indicator" id="arrow-1" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="3"
+                stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="19" x2="12" y2="5"></line>
+                <polyline points="5 12 12 5 19 12"></polyline>
+            </svg>
+
+            <!-- Fake Smile: Point to eyes -->
+            <svg class="arrow-indicator" id="arrow-2" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="3"
+                stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <polyline points="19 12 12 19 5 12"></polyline>
+            </svg>
+
+            <!-- Blend: Point to lips -->
+            <svg class="arrow-indicator" id="arrow-3" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="3"
+                stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <polyline points="19 12 12 19 5 12"></polyline>
+            </svg>
+
+        </div>
+        <div class="explanation-toast" id="toast"></div>
+
+        <div class="game-over" id="game-over-screen">
+            <h2 style="font-size: 2rem; margin:0;">ANALYSIS COMPLETE</h2>
+            <div class="summary-container" id="summary-content">
+                <!-- Populated by JS -->
+            </div>
+            <button class="restart-btn" onclick="restartGame()">RESTART PROTOCOL</button>
+        </div>
+    </div>
+
+    <div class="signature-tag">
+        <span class="maple-leaf">🍁</span> .TA !
+    </div>
+    <script src="script.js"></script>
+</body>
+
+</html>

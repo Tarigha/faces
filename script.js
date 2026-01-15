@@ -263,9 +263,10 @@ window.initGame = function initGame() {
     // Flatten all scenarios into a single queue
     let allScenarios = [];
     GAME_DATA.levels.forEach(set => {
-        set.scenarios.forEach(scen => {
-            // enrich scenario with its set ID so we know which bg to load
-            allScenarios.push({ ...scen, parentSet: set.setId });
+        set.scenarios.forEach(function (scen) {
+            // enrich scenario with its set ID (Legacy compatible merge)
+            var enriched = Object.assign({}, scen, { parentSet: set.setId });
+            allScenarios.push(enriched);
         });
     });
 
@@ -344,7 +345,7 @@ function loadNextLevel() {
         // Fade out, switch, fade in? 
         // For now, instant switch
         const bgData = GAME_DATA.assets[currentSetId].full;
-        document.querySelector(".grid-container").style.backgroundImage = `url(${bgData})`;
+        document.querySelector(".grid-container").style.backgroundImage = 'url("' + bgData + '")';
     }
 
     // Reset UI
@@ -390,6 +391,7 @@ window.handleGuess = function handleGuess(index) {
                 e.stopPropagation();
                 document.removeEventListener('click', advance);
                 document.removeEventListener('keydown', advance);
+                document.removeEventListener('touchstart', advance);
                 // Remove the handler to prevent memory leaks or dual calls
                 loadNextLevel();
             };
@@ -398,6 +400,7 @@ window.handleGuess = function handleGuess(index) {
             setTimeout(() => {
                 document.addEventListener('click', advance);
                 document.addEventListener('keydown', advance);
+                document.addEventListener('touchstart', advance);
             }, 500);
         }
 

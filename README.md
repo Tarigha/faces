@@ -2,7 +2,7 @@
 
 **Facial Detective** is a gamified training tool designed to test and improve your ability to identify subtle human micro-expressions. Originally developed as a standalone browser-based drill, it challenges users to spot specific emotional cues—ranging from basic "Primal Fear" to complex "Muted Arrogance"—under time pressure.
 
-![Game Screenshot](https://via.placeholder.com/800x450.png?text=Facial+Detective+Gameplay+Preview)
+![Game Screenshot](screenshot.png)
 
 ## 🎯 Objectives
 

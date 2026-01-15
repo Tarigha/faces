@@ -16,12 +16,8 @@
     <div class="hud">
         <div class="hud-label">TARGET EXPRESSION</div>
         <div class="hud-target" id="target-display">LOADING...</div>
-        <div class="hard-mode-controls">
-            <label class="toggle-switch">
-                <input type="checkbox" id="hard-mode-toggle" onchange="toggleHardMode()">
-                <span class="slider"></span>
-            </label>
-            <span class="mode-label">HARD PROTOCOL</span>
+        <div class="hard-mode-controls" onclick="cycleDifficulty()">
+            <span class="mode-label" id="difficulty-label">NORMAL PROTOCOL</span>
         </div>
     </div>
 

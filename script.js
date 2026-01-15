@@ -180,6 +180,16 @@ const GAME_DATA = {
                 }
             ]
         }
+        ,
+        {
+            "setId": "set_interrogation",
+            "scenarios": [
+                { "id": "duping", "targetIndex": 0, "name": "Duping Delight", "explanation": "A suppressed smirk indicating satisfaction at deceiving others." },
+                { "id": "shifty", "targetIndex": 1, "name": "Shifty Eyes", "explanation": "Rapid eye movements away from the interviewer; indicates nervousness." },
+                { "id": "dry_mouth", "targetIndex": 2, "name": "Dry Mouth", "explanation": "Tongue protrusion to moisten lips; a sign of autonomic stress." },
+                { "id": "fake_innocence", "targetIndex": 3, "name": "Feigned Shock", "explanation": "Exaggerated widening of eyes to simulate innocence." }
+            ]
+        }
     ]
 };
 
@@ -191,7 +201,7 @@ let isLocked = false;
 let score = 0;
 let streak = 0;
 let missedScenarios = [];
-let isHardMode = false;
+let difficulty = 'normal'; // 'easy' (no timer), 'normal' (8s), 'hard' (5s), 'expert' (2s)
 let gameTimeout = null;
 
 function startTimer() {
@@ -203,27 +213,42 @@ function startTimer() {
     timerBar.style.transition = 'none';
     timerBar.style.width = '100%';
 
-    if (isHardMode) {
+    let duration = 0;
+    if (difficulty === 'hard') duration = 5000;
+    if (difficulty === 'expert') duration = 2500;
+    if (difficulty === 'normal') duration = 10000; // Generous timer
+
+    if (difficulty !== 'easy') {
         timerContainer.style.opacity = '1';
         // Force reflow
         void timerBar.offsetWidth;
 
-        timerBar.style.transition = 'width 5s linear';
+        timerBar.style.transition = `width ${duration}ms linear`;
         timerBar.style.width = '0%';
 
         gameTimeout = setTimeout(() => {
             handleGuess(-1);
-        }, 5000);
+        }, duration);
     } else {
         timerContainer.style.opacity = '0';
     }
 }
 
-window.toggleHardMode = function toggleHardMode() {
-    isHardMode = document.getElementById('hard-mode-toggle').checked;
-    const label = document.querySelector('.hard-mode-controls');
-    if (isHardMode) label.classList.add('hard-mode-active');
-    else label.classList.remove('hard-mode-active');
+window.cycleDifficulty = function cycleDifficulty() {
+    const modes = ['easy', 'normal', 'hard', 'expert'];
+    let currentIdx = modes.indexOf(difficulty);
+    let nextIdx = (currentIdx + 1) % modes.length;
+    difficulty = modes[nextIdx];
+
+    const label = document.getElementById('difficulty-label');
+    label.innerText = difficulty.toUpperCase() + " PROTOCOL";
+
+    // Visual Cues
+    const container = document.querySelector('.hard-mode-controls');
+    container.className = 'hard-mode-controls mode-' + difficulty;
+
+    // Restart timer if mid-game
+    if (!isLocked) startTimer();
 }
 
 function shuffle(array) {
@@ -350,11 +375,13 @@ window.handleGuess = function handleGuess(index) {
         // Show Explanation
         const toast = document.getElementById('toast');
 
-        if (isHardMode) {
+        if (difficulty !== 'easy' && difficulty !== 'normal') {
             toast.innerText = currentLevel.explanation;
             toast.classList.add('show');
             // Hard Mode: Fast auto-advance
             setTimeout(loadNextLevel, 1500);
+        } else {
+            // Easy/Normal: Manual Advance
         } else {
             // Normal Mode: Manual Advance for learning
             toast.innerHTML = currentLevel.explanation + "<br><br><span style='font-size: 0.8rem; opacity: 0.7; letter-spacing: 1px;'>[ TAP ANYWHERE TO CONTINUE ]</span>";
@@ -387,7 +414,7 @@ window.handleGuess = function handleGuess(index) {
         flash.style.opacity = '1';
         setTimeout(() => flash.style.opacity = '0', 200);
 
-        if (isHardMode && !isLocked) {
+        if (difficulty !== 'easy' && !isLocked) {
             startTimer();
         }
     }
